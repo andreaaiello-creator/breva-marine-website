@@ -27,7 +27,7 @@ on:
       max_images:
         description: "Limit per run (1–250)"
         required: true
-        default: "40"
+        default: "10"
 permissions:
   contents: write
 concurrency:
@@ -46,10 +46,20 @@ jobs:
           python-version: "3.12"
       - name: Install image pipeline
         run: pip install pillow google-api-python-client google-auth
+      - name: Validate workflow inputs
+        env:
+          IMPORT_MAX_IMAGES: ${{ inputs.max_images }}
+        run: |
+          if ! [[ "$IMPORT_MAX_IMAGES" =~ ^[0-9]+$ ]] || (( IMPORT_MAX_IMAGES < 1 || IMPORT_MAX_IMAGES > 250 )); then
+            echo "max_images must be 1..250"; exit 1
+          fi
       - name: Import assets from approved marketing folders
         env:
           GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON }}
-        run: python scripts/import_breva_drive_photos.py --scope "${{ inputs.scope }}" --mode "${{ inputs.mode }}" --max-images "${{ inputs.max_images }}"
+          IMPORT_SCOPE: ${{ inputs.scope }}
+          IMPORT_MODE: ${{ inputs.mode }}
+          IMPORT_MAX_IMAGES: ${{ inputs.max_images }}
+        run: python scripts/import_breva_drive_photos.py --scope "$IMPORT_SCOPE" --mode "$IMPORT_MODE" --max-images "$IMPORT_MAX_IMAGES"
       - name: Upload audit report
         uses: actions/upload-artifact@v4
         with:
