@@ -1,0 +1,68 @@
+name: Import BREVA marketing photos from Drive
+on:
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: "Which approved marketing collection to import"
+        required: true
+        type: choice
+        options:
+          - b800-navigation
+          - b800-details
+          - b630-navigation
+          - b630-details
+          - b1300-navigation
+          - b1300-details
+          - shipyard
+          - all
+        default: b800-navigation
+      mode:
+        description: "PLAN to preview or APPLY to upload web images into this branch"
+        required: true
+        type: choice
+        options:
+          - plan
+          - apply
+        default: plan
+      max_images:
+        description: "Limit per run (1–250)"
+        required: true
+        default: "40"
+permissions:
+  contents: write
+concurrency:
+  group: breva-drive-photo-import
+  cancel-in-progress: false
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/import-lovable-prototype
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install image pipeline
+        run: pip install pillow google-api-python-client google-auth
+      - name: Import assets from approved marketing folders
+        env:
+          GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON }}
+        run: python scripts/import_breva_drive_photos.py --scope "${{ inputs.scope }}" --mode "${{ inputs.mode }}" --max-images "${{ inputs.max_images }}"
+      - name: Upload audit report
+        uses: actions/upload-artifact@v4
+        with:
+          name: breva-asset-import-report
+          path: asset-import-report.json
+      - name: Commit optimized assets on development branch only
+        if: inputs.mode == 'apply'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/assets/breva
+          if ! git diff --cached --quiet; then
+            git commit -m "assets: import approved optimized BREVA photos"
+            git pull --rebase origin feat/import-lovable-prototype
+            git push origin HEAD:feat/import-lovable-prototype
+          fi
