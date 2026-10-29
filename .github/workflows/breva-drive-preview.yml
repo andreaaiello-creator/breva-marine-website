@@ -1,0 +1,37 @@
+name: BREVA Drive image preview (read only)
+on:
+  workflow_dispatch:
+    inputs:
+      max_files:
+        description: Maximum image files to preview
+        required: false
+        default: '60'
+permissions:
+  contents: read
+  id-token: write
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/101676037530/locations/global/workloadIdentityPools/breva-github-actions/providers/breva-github
+          service_account: breva-website-drive-sync@breva-erp.iam.gserviceaccount.com
+          token_format: access_token
+          access_token_scopes: https://www.googleapis.com/auth/drive.readonly
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install google-auth requests Pillow
+      - name: Read authorized Drive folder and make preview
+        env:
+          DRIVE_FOLDER_ID: 1gxG-2Ekf7E7KdPeA2OZ5yytNEEeR-O01
+          MAX_FILES: ${{ inputs.max_files }}
+        run: python scripts/drive_image_preview.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: breva-drive-photo-preview
+          path: drive-preview/
+          retention-days: 3
