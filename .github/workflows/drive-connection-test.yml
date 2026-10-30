@@ -1,0 +1,35 @@
+name: BREVA Drive connection test
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  id-token: write
+jobs:
+  verify-drive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out import code without merging website
+        uses: actions/checkout@v4
+        with:
+          ref: feat/import-lovable-prototype
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --disable-pip-version-check Pillow google-api-python-client google-auth
+      - name: Authenticate with Google without long-lived keys
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/101676037530/locations/global/workloadIdentityPools/breva-github-actions/providers/breva-github
+          service_account: breva-website-drive-sync@breva-erp.iam.gserviceaccount.com
+          create_credentials_file: true
+      - name: Dry-run first ten B800 navigation images
+        run: python scripts/import_breva_drive_photos.py --scope b800-navigation --mode plan --max-images 10
+      - name: Upload audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: breva-b800-drive-test
+          path: asset-import-report.json
+          if-no-files-found: ignore
