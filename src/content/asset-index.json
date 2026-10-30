@@ -1,0 +1,311 @@
+{
+  "version": 1,
+  "assets": [
+    {
+      "model": "b1300",
+      "category": "navigation",
+      "filename": "breva-1300-0005-30g1O1bA.webp",
+      "src": "/public/assets/breva/b1300/navigation/breva-1300-0005-30g1O1bA.webp"
+    },
+    {
+      "model": "b1300",
+      "category": "navigation",
+      "filename": "breva-1300-0028-Gs36f-qV.webp",
+      "src": "/public/assets/breva/b1300/navigation/breva-1300-0028-Gs36f-qV.webp"
+    },
+    {
+      "model": "b1300",
+      "category": "navigation",
+      "filename": "breva-1300-0411-8G9mijVD.webp",
+      "src": "/public/assets/breva/b1300/navigation/breva-1300-0411-8G9mijVD.webp"
+    },
+    {
+      "model": "b1300",
+      "category": "navigation",
+      "filename": "breva-1300-0437-fSTSYd_Y.webp",
+      "src": "/public/assets/breva/b1300/navigation/breva-1300-0437-fSTSYd_Y.webp"
+    },
+    {
+      "model": "b1300",
+      "category": "navigation",
+      "filename": "breva-1300-0472-mMaddeXT.webp",
+      "src": "/public/assets/breva/b1300/navigation/breva-1300-0472-mMaddeXT.webp"
+    },
+    {
+      "model": "b1300",
+      "category": "navigation",
+      "filename": "breva-1300-0476-tAXJaZbd.webp",
+      "src": "/public/assets/breva/b1300/navigation/breva-1300-0476-tAXJaZbd.webp"
+    },
+    {
+      "model": "b1300",
+      "category": "navigation",
+      "filename": "breva-1300-0547-0CVDNBvH.webp",
+      "src": "/public/assets/breva/b1300/navigation/breva-1300-0547-0CVDNBvH.webp"
+    },
+    {
+      "model": "b1300",
+      "category": "navigation",
+      "filename": "breva-1300-0599-MTUU5kXq.webp",
+      "src": "/public/assets/breva/b1300/navigation/breva-1300-0599-MTUU5kXq.webp"
+    },
+    {
+      "model": "b1300",
+      "category": "navigation",
+      "filename": "breva-1300-628-modello-dtyx_666.webp",
+      "src": "/public/assets/breva/b1300/navigation/breva-1300-628-modello-dtyx_666.webp"
+    },
+    {
+      "model": "b1300",
+      "category": "navigation",
+      "filename": "breva-1300-modello-Y9UGmuk-.webp",
+      "src": "/public/assets/breva/b1300/navigation/breva-1300-modello-Y9UGmuk-.webp"
+    },
+    {
+      "model": "b800",
+      "category": "navigation",
+      "filename": "bv800-det-04879-7gTN4gkt.webp",
+      "src": "/public/assets/breva/b800/navigation/bv800-det-04879-7gTN4gkt.webp"
+    },
+    {
+      "model": "b800",
+      "category": "navigation",
+      "filename": "bv800-det-05798-y0wZSzlP.webp",
+      "src": "/public/assets/breva/b800/navigation/bv800-det-05798-y0wZSzlP.webp"
+    },
+    {
+      "model": "b800",
+      "category": "navigation",
+      "filename": "bv800-nav-04530-2-xeMjZB0j.webp",
+      "src": "/public/assets/breva/b800/navigation/bv800-nav-04530-2-xeMjZB0j.webp"
+    },
+    {
+      "model": "b800",
+      "category": "navigation",
+      "filename": "bv800-nav-05535-2-I66SkUjr.webp",
+      "src": "/public/assets/breva/b800/navigation/bv800-nav-05535-2-I66SkUjr.webp"
+    },
+    {
+      "model": "b800",
+      "category": "navigation",
+      "filename": "bv800-nav-05582-2-sxbgKyVy.webp",
+      "src": "/public/assets/breva/b800/navigation/bv800-nav-05582-2-sxbgKyVy.webp"
+    },
+    {
+      "model": "b800",
+      "category": "navigation",
+      "filename": "bv800-nav-05611-2-kcUgCHSb.webp",
+      "src": "/public/assets/breva/b800/navigation/bv800-nav-05611-2-kcUgCHSb.webp"
+    },
+    {
+      "model": "b800",
+      "category": "navigation",
+      "filename": "bv800-nav-05663-2-ZCM2nS9n.webp",
+      "src": "/public/assets/breva/b800/navigation/bv800-nav-05663-2-ZCM2nS9n.webp"
+    },
+    {
+      "model": "b800",
+      "category": "navigation",
+      "filename": "bv800-nav-05726-2-gBnk__8K.webp",
+      "src": "/public/assets/breva/b800/navigation/bv800-nav-05726-2-gBnk__8K.webp"
+    },
+    {
+      "model": "b800",
+      "category": "navigation",
+      "filename": "bv800-nav-05732-2-UM9sOdkn.webp",
+      "src": "/public/assets/breva/b800/navigation/bv800-nav-05732-2-UM9sOdkn.webp"
+    },
+    {
+      "model": "b800",
+      "category": "navigation",
+      "filename": "bv800-nav-05760-2-U3QFuIq6.webp",
+      "src": "/public/assets/breva/b800/navigation/bv800-nav-05760-2-U3QFuIq6.webp"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/LOGHI PER GOOGLE",
+      "filename": "Breva_Marine_OR_positivo-removebg-preview.png",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/LOGHI PER GOOGLE/Breva_Marine_OR_positivo-removebg-preview.png"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/LOGHI PER GOOGLE",
+      "filename": "Screenshot 2025-04-01 at 20.50.19.png",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/LOGHI PER GOOGLE/Screenshot 2025-04-01 at 20.50.19.png"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/LOGHI PER GOOGLE",
+      "filename": "Screenshot_2025-04-01_at_21.00.14-removebg-preview__1_-removebg-preview.png",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/LOGHI PER GOOGLE/Screenshot_2025-04-01_at_21.00.14-removebg-preview__1_-removebg-preview.png"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/LOGO ALBANIA",
+      "filename": "BREVA_ALBANIA_Green1.jpg",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/LOGO ALBANIA/BREVA_ALBANIA_Green1.jpg"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/LOGO ALBANIA",
+      "filename": "BREVA_ALBANIA_Green2.jpg",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/LOGO ALBANIA/BREVA_ALBANIA_Green2.jpg"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/LOGO ALBANIA",
+      "filename": "BREVA_ALBANIA_Grey1.jpg",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/LOGO ALBANIA/BREVA_ALBANIA_Grey1.jpg"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/LOGO ALBANIA",
+      "filename": "BREVA_ALBANIA_Grey2.jpg",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/LOGO ALBANIA/BREVA_ALBANIA_Grey2.jpg"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/LOGO ALBANIA",
+      "filename": "BREVA_ALBANIA_White1.jpg",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/LOGO ALBANIA/BREVA_ALBANIA_White1.jpg"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/LOGO ALBANIA",
+      "filename": "BREVA_ALBANIA_White2.jpg",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/LOGO ALBANIA/BREVA_ALBANIA_White2.jpg"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/LOGO FIRMA MAIL/breva_email_icons_18px",
+      "filename": "breva_company_18px.png",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/LOGO FIRMA MAIL/breva_email_icons_18px/breva_company_18px.png"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/LOGO FIRMA MAIL/breva_email_icons_18px",
+      "filename": "breva_location_18px.png",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/LOGO FIRMA MAIL/breva_email_icons_18px/breva_location_18px.png"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/LOGO FIRMA MAIL/breva_email_icons_18px",
+      "filename": "breva_phone_18px.png",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/LOGO FIRMA MAIL/breva_email_icons_18px/breva_phone_18px.png"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/LOGO FIRMA MAIL/breva_email_icons_18px",
+      "filename": "breva_website_18px.png",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/LOGO FIRMA MAIL/breva_email_icons_18px/breva_website_18px.png"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/LOGO FIRMA MAIL/breva_email_icons_18px",
+      "filename": "breva_whatsapp_18px.png",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/LOGO FIRMA MAIL/breva_email_icons_18px/breva_whatsapp_18px.png"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/Logo + marchio registrato",
+      "filename": "BREVA_MarchioRegistrato_black.jpg",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/Logo + marchio registrato/BREVA_MarchioRegistrato_black.jpg"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/Logo + marchio registrato",
+      "filename": "BREVA_MarchioRegistrato_white.jpg",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/Logo + marchio registrato/BREVA_MarchioRegistrato_white.jpg"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/Logo + marchio registrato",
+      "filename": "Breva_marchioregistrato_black.png",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/Logo + marchio registrato/Breva_marchioregistrato_black.png"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/Logo + marchio registrato",
+      "filename": "Breva_marchioregistrato_corporate.png",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/Logo + marchio registrato/Breva_marchioregistrato_corporate.png"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/Logo + marchio registrato",
+      "filename": "Breva_marchioregistrato_white.png",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/Logo + marchio registrato/Breva_marchioregistrato_white.png"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/Logo completo",
+      "filename": "Breva_Marine_OR_negativo_page-0001.jpg",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/Logo completo/Breva_Marine_OR_negativo_page-0001.jpg"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/Logo completo",
+      "filename": "Breva_Marine_OR_positivo copia.jpg",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/Logo completo/Breva_Marine_OR_positivo copia.jpg"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/Logo completo",
+      "filename": "Breva_Marine_OR_positivo.jpg",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/Logo completo/Breva_Marine_OR_positivo.jpg"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/Logo completo",
+      "filename": "Breva_Marine_VER_icon copy.jpg",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/Logo completo/Breva_Marine_VER_icon copy.jpg"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/Logo completo",
+      "filename": "Breva_Marine_VER_icon.jpg",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/Logo completo/Breva_Marine_VER_icon.jpg"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/Logo completo",
+      "filename": "Breva_Marine_VER_positivo copia.jpg",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/Logo completo/Breva_Marine_VER_positivo copia.jpg"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/Logo per fatture e ddt",
+      "filename": "indirizzo 725x80.jpg",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/Logo per fatture e ddt/indirizzo 725x80.jpg"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/Logo per fatture e ddt",
+      "filename": "logo 330x100.jpg",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/Logo per fatture e ddt/logo 330x100.jpg"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/Pittogramma",
+      "filename": "Breva_Marine_pittogramma_positivo.png",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/Pittogramma/Breva_Marine_pittogramma_positivo.png"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE/Pittogramma",
+      "filename": "Logo YouTube.png",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/Pittogramma/Logo YouTube.png"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE",
+      "filename": "indirizzo.jpg",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/indirizzo.jpg"
+    },
+    {
+      "model": "brand",
+      "category": "logos/LOGHI E SCRITTE",
+      "filename": "logo 340x110.jpg",
+      "src": "/public/assets/breva/brand/logos/LOGHI E SCRITTE/logo 340x110.jpg"
+    }
+  ]
+}
