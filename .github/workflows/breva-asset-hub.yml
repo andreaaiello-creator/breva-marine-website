@@ -1,0 +1,96 @@
+name: BREVA Asset Hub - selective Drive import
+on:
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: Approved Drive collection
+        required: true
+        type: choice
+        options:
+          - b630-navigation
+          - b630-details
+          - b800-navigation
+          - b800-details
+          - b1300-navigation
+          - b1300-details
+          - shipyard
+      mode:
+        description: Preview first; import only after review
+        required: true
+        default: plan
+        type: choice
+        options: [plan, apply]
+      max_images:
+        description: Limit images processed (1-50)
+        required: true
+        default: "10"
+permissions:
+  id-token: write
+  contents: write
+concurrency:
+  group: breva-selective-asset-import
+  cancel-in-progress: false
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout website development branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/import-lovable-prototype
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate request
+        env:
+          MAX_IMAGES: ${{ inputs.max_images }}
+        shell: bash
+        run: |
+          if ! [[ "$MAX_IMAGES" =~ ^[0-9]+$ ]] || (( MAX_IMAGES < 1 || MAX_IMAGES > 50 )); then
+            echo "max_images must be between 1 and 50"
+            exit 1
+          fi
+      - name: Install image dependencies
+        run: python -m pip install --disable-pip-version-check Pillow google-api-python-client google-auth
+      - name: Authenticate to Google Drive with OIDC
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/101676037530/locations/global/workloadIdentityPools/breva-github-actions/providers/breva-github
+          service_account: breva-website-drive-sync@breva-erp.iam.gserviceaccount.com
+          create_credentials_file: true
+      - name: Import or preview images
+        env:
+          SCOPE: ${{ inputs.scope }}
+          MODE: ${{ inputs.mode }}
+          MAX_IMAGES: ${{ inputs.max_images }}
+        run: python scripts/import_breva_drive_photos.py --scope "$SCOPE" --mode "$MODE" --max-images "$MAX_IMAGES"
+      - name: Build public website media index
+        if: inputs.mode == 'apply'
+        run: python scripts/build_asset_index.py
+      - name: Upload source-to-output audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: breva-asset-import-audit
+          path: asset-import-report.json
+          if-no-files-found: ignore
+      - name: Commit approved web images to development branch only
+        if: inputs.mode == 'apply'
+        env:
+          SCOPE: ${{ inputs.scope }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          case "$SCOPE" in
+            b630-*) git add public/assets/breva/b630/ ;;
+            b800-*) git add public/assets/breva/b800/ ;;
+            b1300-*) git add public/assets/breva/b1300/ ;;
+            shipyard) git add public/assets/breva/shipyard/ ;;
+            *) echo "Unexpected scope"; exit 1 ;;
+          esac
+          git add src/content/asset-index.json
+          if ! git diff --cached --quiet; then
+            git commit -m "assets: selectively import optimized BREVA marketing photos"
+            git pull --rebase origin feat/import-lovable-prototype
+            git push origin HEAD:feat/import-lovable-prototype
+          fi
