@@ -1,0 +1,47 @@
+name: BREVA Import B800 - first 10 optimized photos
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+  id-token: write
+concurrency:
+  group: breva-b800-photo-import
+  cancel-in-progress: false
+jobs:
+  import-b800:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout BREVA development branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/import-lovable-prototype
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: python -m pip install --disable-pip-version-check Pillow google-api-python-client google-auth
+      - name: Authenticate to Google Cloud via keyless OIDC
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/101676037530/locations/global/workloadIdentityPools/breva-github-actions/providers/breva-github
+          service_account: breva-website-drive-sync@breva-erp.iam.gserviceaccount.com
+          create_credentials_file: true
+      - name: Optimize first ten B800 navigation photos
+        run: python scripts/import_breva_drive_photos.py --scope b800-navigation --mode apply --max-images 10
+      - name: Upload import report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: breva-b800-import-report
+          path: asset-import-report.json
+          if-no-files-found: ignore
+      - name: Commit WebP files only to development branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/assets/breva/b800/navigation/*.webp
+          if ! git diff --cached --quiet; then
+            git commit -m "assets: optimize first 10 B800 navigation photos from Drive"
+            git pull --rebase origin feat/import-lovable-prototype
+            git push origin HEAD:feat/import-lovable-prototype
+          fi
