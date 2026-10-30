@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Transfer approved BREVA marketing photos from Google Drive into optimized WebP assets."""
 import argparse, io, json, os, pathlib, re, sys
-from google.oauth2 import service_account
+import google.auth
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload
 from PIL import Image, ImageOps, UnidentifiedImageError
@@ -58,10 +58,7 @@ def main():
     parser.add_argument("--quality", type=int, default=82)
     args = parser.parse_args()
     if not (1 <= args.max_images <= 250): parser.error("max-images must be 1..250")
-    secret = os.environ.get("GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON")
-    if not secret: sys.exit("Missing GitHub secret GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON")
-    creds = service_account.Credentials.from_service_account_info(
-      json.loads(secret), scopes=["https://www.googleapis.com/auth/drive.readonly"])
+    creds, _ = google.auth.default(scopes=["https://www.googleapis.com/auth/drive.readonly"])
     drive = build("drive", "v3", credentials=creds, cache_discovery=False)
     selected = FOLDERS if args.scope == "all" else {args.scope: FOLDERS[args.scope]}
     count, log = 0, []
