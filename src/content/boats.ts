@@ -56,7 +56,7 @@ const galleryFromAssets = (model: Boat["id"], name: string): MediaSlot[] => {
     },
     kind: "photo" as const,
     aspect: (i === 0 ? "cinema" : i % 3 === 1 ? "tall" : "wide") as MediaSlot["aspect"],
-    src: asset.src.replace(/^\\/public\\//, "/"),
+    src: asset.src.startsWith("/public/") ? asset.src.slice("/public".length) : asset.src,
   }));
 };
 
