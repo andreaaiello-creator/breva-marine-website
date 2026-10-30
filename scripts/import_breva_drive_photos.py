@@ -24,7 +24,7 @@ def files_in_folder(drive, folder):
         result = drive.files().list(
           q=f"'{folder}' in parents and trashed = false",
           fields="nextPageToken,files(id,name,mimeType,size,md5Checksum)",
-          page_size=1000, page_token=token, supportsAllDrives=True,
+          pageSize=1000, pageToken=token, supportsAllDrives=True,
           includeItemsFromAllDrives=True).execute()
         for entry in result.get("files", []):
             if entry["mimeType"] in SUPPORTED:
