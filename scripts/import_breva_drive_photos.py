@@ -67,7 +67,11 @@ def main():
             if count >= args.max_images: break
             slug = re.sub(r"[^a-z0-9]+", "-", pathlib.Path(item["name"]).stem.lower()).strip("-")[:64]
             filename = f"{slug}-{item['id'][-8:]}.webp"
-            dest = ROOT / directory / filename
+            output_dir = directory
+            # Some navigation source folders also contain detail photos; route them correctly.
+            if directory.endswith("/navigation") and re.search(r"(?:^|[_ -])DET(?:[_ -]|$)", item["name"], re.I):
+                output_dir = directory.rsplit("/", 1)[0] + "/details"
+            dest = ROOT / output_dir / filename
             if dest.exists(): continue
             log.append({"scope":group,"source_name":item["name"],"output":str(dest),"status":args.mode})
             if args.mode == "apply":
