@@ -1,0 +1,44 @@
+name: BREVA Website 2.0 - build and asset verification
+on:
+  workflow_dispatch:
+  push:
+    branches: [feat/import-lovable-prototype]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/import-lovable-prototype
+          persist-credentials: false
+      - name: Check imported website image URLs
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          catalog = json.loads(Path('src/content/asset-index.json').read_text())
+          models = {'b800': 0, 'b1300': 0}
+          missing = []
+          for asset in catalog['assets']:
+              src = asset['src']
+              if not src.startswith('/'): missing.append(src); continue
+              rel = src.removeprefix('/public/').removeprefix('/')
+              file = Path('public') / rel
+              if not file.is_file(): missing.append(str(file))
+              if asset['model'] in models and asset['category'] in {'navigation', 'details'}:
+                  models[asset['model']] += 1
+          if missing:
+              raise SystemExit('Missing or invalid image paths: ' + ', '.join(missing[:15]))
+          if any(v < 1 for v in models.values()):
+              raise SystemExit('No imported photos for B800 or B1300: ' + str(models))
+          print('Verified indexed image files', models)
+          PY
+      - uses: oven-sh/setup-bun@v2
+      - name: Install locked dependencies
+        run: bun install --frozen-lockfile
+      - name: Run tests
+        run: bun run test
+      - name: Production build (without deployment)
+        run: bun run build
