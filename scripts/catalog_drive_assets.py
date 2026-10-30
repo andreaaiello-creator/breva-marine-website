@@ -33,10 +33,12 @@ def main():
     drive = build("drive", "v3", credentials=creds, cache_discovery=False)
     selected = FOLDERS if args.scope == "all" else {args.scope: FOLDERS[args.scope]}
     results = []
+    counts = {}
     term = args.query.casefold().strip()
     for scope, folder in selected.items():
         token = None
-        while len(results) < args.max_files:
+        matches_in_scope = 0
+        while True:
             response = drive.files().list(
                 q=f"'{folder}' in parents and trashed = false",
                 fields="nextPageToken,files(id,name,mimeType,size,modifiedTime,imageMediaMetadata(width,height),webViewLink)",
@@ -46,20 +48,22 @@ def main():
             for item in response.get("files", []):
                 if item.get("mimeType") not in ALLOWED: continue
                 if term and term not in item.get("name", "").casefold() and term not in scope: continue
+                matches_in_scope += 1
+                if len(results) >= args.max_files: continue
                 results.append({
                     "scope": scope, "name": item["name"], "drive_file_id": item["id"],
                     "mime_type": item["mimeType"], "size_bytes": int(item.get("size", 0)),
                     "modified": item.get("modifiedTime"),
                     "drive_url": item.get("webViewLink", "https://drive.google.com/file/d/" + item["id"] + "/view")
                 })
-                if len(results) >= args.max_files: break
             token = response.get("nextPageToken")
             if not token: break
-        if len(results) >= args.max_files: break
+        counts[scope] = matches_in_scope
     out = Path("drive-asset-catalog.json")
     out.write_text(json.dumps({"version": 1, "query": args.query, "scope": args.scope,
-                              "count": len(results), "assets": results}, ensure_ascii=False, indent=2) + "\n")
-    print(json.dumps({"scope": args.scope, "query": args.query, "matches": len(results),
+                              "count": len(results), "total_matches": sum(counts.values()), "counts_by_scope": counts, "truncated": sum(counts.values()) > len(results), "assets": results}, ensure_ascii=False, indent=2) + "\n")
+    print(json.dumps({"scope": args.scope, "query": args.query, "listed": len(results), "total_matches": sum(counts.values()),
+                      "counts_by_scope": counts, "truncated": sum(counts.values()) > len(results),
                       "report": str(out)}))
 if __name__ == "__main__":
     main()
