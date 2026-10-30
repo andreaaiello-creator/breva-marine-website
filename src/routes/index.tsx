@@ -18,7 +18,7 @@ function Home() {
     <>
       <CampaignHighlight />
       <section className="surface-dark relative min-h-[100svh] overflow-hidden">
-        <div className="absolute inset-0"><Media slot={{ id: "home-hero", alt: { it: "BREVA in navigazione al tramonto", en: "BREVA underway at dusk" }, kind: "video", aspect: "cinema" }} className="h-full !aspect-auto" /></div>
+        <div className="absolute inset-0"><Media slot={{ ...boats.find((b) => b.id === "b1300")!.gallery[0]!, aspect: "cinema" }} className="h-full !aspect-auto" /></div>
         <div className="bg-fade-abyss absolute inset-0" />
         <div className="container-breva relative flex min-h-[100svh] flex-col justify-end pb-16 pt-32 md:pb-24">
           <Eyebrow className="rise">{t("home.kicker")}</Eyebrow>
