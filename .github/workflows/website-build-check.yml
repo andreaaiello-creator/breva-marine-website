@@ -41,4 +41,5 @@ jobs:
       - name: Run tests
         run: bun run test
       - name: Production build (without deployment)
+        if: success() || failure()
         run: bun run build
