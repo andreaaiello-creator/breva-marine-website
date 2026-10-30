@@ -39,7 +39,7 @@ def main():
         while len(results) < args.max_files:
             response = drive.files().list(
                 q=f"'{folder}' in parents and trashed = false",
-                fields="nextPageToken,files(id,name,mimeType,size,modifiedTime,width,height,webViewLink)",
+                fields="nextPageToken,files(id,name,mimeType,size,modifiedTime,imageMediaMetadata(width,height),webViewLink)",
                 pageSize=1000, pageToken=token, supportsAllDrives=True,
                 includeItemsFromAllDrives=True
             ).execute()
