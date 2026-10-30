@@ -27,3 +27,7 @@ npm run dev
 - TypeScript
 - React
 - Tailwind CSS
+
+## BREVA Website 2.0 preview
+
+The development branch `feat/import-lovable-prototype` is used for isolated Vercel preview deployments. The `main` branch remains separate; no production domain is configured by this repository change. Validate the visual preview before merging the website PR.
