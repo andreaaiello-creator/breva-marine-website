@@ -1,0 +1,51 @@
+name: BREVA Asset Hub - search approved Drive photos
+on:
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: Approved marketing collection to search
+        required: true
+        default: all
+        type: choice
+        options: [all, b630-navigation, b630-details, b800-navigation, b800-details, b1300-navigation, b1300-details, shipyard]
+      query:
+        description: Optional word in filename or collection
+        required: false
+        default: ""
+        type: string
+      max_files:
+        description: Maximum number of matching records
+        required: true
+        default: "500"
+permissions:
+  contents: read
+  id-token: write
+jobs:
+  catalog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/import-lovable-prototype
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check google-api-python-client google-auth
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/101676037530/locations/global/workloadIdentityPools/breva-github-actions/providers/breva-github
+          service_account: breva-website-drive-sync@breva-erp.iam.gserviceaccount.com
+          create_credentials_file: true
+      - name: Search approved marketing files without downloading
+        env:
+          SCOPE: ${{ inputs.scope }}
+          QUERY: ${{ inputs.query }}
+          MAX_FILES: ${{ inputs.max_files }}
+        run: python scripts/catalog_drive_assets.py --scope "$SCOPE" --query "$QUERY" --max-files "$MAX_FILES"
+      - name: Upload private-to-run catalog
+        uses: actions/upload-artifact@v4
+        with:
+          name: breva-drive-asset-catalog
+          path: drive-asset-catalog.json
+          retention-days: 7
