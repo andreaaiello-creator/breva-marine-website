@@ -15,7 +15,7 @@ def main():
             continue
         category = parts[1] if parts[0] in {"b630","b800","b1100","b1300"} else "/".join(parts[1:-1])
         photos.append({"model": parts[0], "category":category,
-            "filename":path.name,"src":"/"+path.as_posix()})
+            "filename":path.name,"src":"/"+path.relative_to("public").as_posix()})
     OUTPUT.parent.mkdir(parents=True,exist_ok=True)
     OUTPUT.write_text(json.dumps({"version":1,"assets":photos},indent=2)+"\n",encoding="utf-8")
     print(f"Indexed {len(photos)} website assets in {OUTPUT}")
