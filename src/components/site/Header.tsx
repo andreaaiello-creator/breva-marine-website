@@ -15,8 +15,15 @@ export const NAV: { to: string; key: DictKey }[] = [
 ];
 
 export function Wordmark() {
-  // Text-mark placeholder: replace with official BREVA logo file once supplied.
-  return <span className="font-display text-xl font-extrabold tracking-[0.32em]">BREVA<span className="ml-2 align-middle text-[0.55rem] font-medium tracking-[0.3em] text-titanium">MARINE</span></span>;
+  return (
+    <img
+      src="/assets/breva/brand/logos/LOGHI%20E%20SCRITTE/Logo%20%2B%20marchio%20registrato/Breva_marchioregistrato_white.png"
+      alt="BREVA Marine"
+      className="h-9 w-auto max-w-[185px] object-contain md:h-11"
+      width={185}
+      height={44}
+    />
+  );
 }
 
 export function Header() {
