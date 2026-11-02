@@ -47,7 +47,7 @@ const template = (id: Boat["id"], name: string, populated = false): Boat => ({
 // Use only already-imported official BREVA assets; no Drive IDs or credentials exposed.
 const galleryFromAssets = (model: Boat["id"], name: string): MediaSlot[] => {
   const entries = assetIndex.assets.filter((asset) => asset.model === model && (asset.category === "navigation" || asset.category === "details"));
-  const ordered = [...entries.filter((asset) => asset.category === "navigation"), ...entries.filter((asset) => asset.category === "details")];
+  const ordered = [...entries.filter((asset) => asset.category === "navigation" && !/(?:^|[-_])det(?:[-_]|$)/i.test(asset.filename)), ...entries.filter((asset) => asset.category === "details" || /(?:^|[-_])det(?:[-_]|$)/i.test(asset.filename))];
   return ordered.map((asset, i) => ({
     id: `${model}-official-${i + 1}`,
     alt: {
@@ -96,8 +96,8 @@ b800.highlights = [
   { title: { it: "Vita a bordo", en: "Life on board" }, body: { it: "Spazi esterni dedicati al relax e alla convivialità.", en: "Outdoor spaces for relaxation and time together." } },
   { title: { it: "Navigazione", en: "Underway" }, body: { it: "Un modello da scoprire attraverso le immagini ufficiali in mare.", en: "Explore the model through its official underway photography." } },
 ];
-b800.gallery = galleryFromAssets("b800", "B800");
-b1300.gallery = galleryFromAssets("b1300", "B1300");
+b800.gallery = galleryFromAssets("b800", "B800").slice(0, 8);
+b1300.gallery = galleryFromAssets("b1300", "B1300").slice(0, 10);
 export const boats: Boat[] = [template("b630", "B630"), b800, template("b1100", "B1100"), b1300];
 export const getBoat = (id: string) => boats.find((b) => b.id === id.toLowerCase());
 
