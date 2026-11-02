@@ -96,7 +96,23 @@ b800.highlights = [
   { title: { it: "Vita a bordo", en: "Life on board" }, body: { it: "Spazi esterni dedicati al relax e alla convivialità.", en: "Outdoor spaces for relaxation and time together." } },
   { title: { it: "Navigazione", en: "Underway" }, body: { it: "Un modello da scoprire attraverso le immagini ufficiali in mare.", en: "Explore the model through its official underway photography." } },
 ];
-b800.gallery = galleryFromAssets("b800", "B800").slice(0, 8);
+// Keep a stable, reviewed-by-filename shortlist instead of relying on JSON scan order.
+// Hero remains provisional pending visual inspection of the original compositions.
+const b800Preferred = [
+  "bv800-nav-05732-2-UM9sOdkn.webp",
+  "bv800-nav-05663-2-ZCM2nS9n.webp",
+  "bv800-nav-05582-2-sxbgKyVy.webp",
+  "bv800-nav-05726-2-gBnk__8K.webp",
+  "bv800-nav-05535-2-I66SkUjr.webp",
+  "bv800-nav-05611-2-kcUgCHSb.webp",
+  "bv800-nav-05760-2-U3QFuIq6.webp",
+  "bv800-nav-04530-2-xeMjZB0j.webp",
+];
+const b800Imported = galleryFromAssets("b800", "B800");
+b800.gallery = b800Preferred.map((filename) =>
+  b800Imported.find((slot) => slot.src?.endsWith("/" + filename))
+).filter((slot): slot is MediaSlot => Boolean(slot));
+
 b1300.gallery = galleryFromAssets("b1300", "B1300").slice(0, 10);
 export const boats: Boat[] = [template("b630", "B630"), b800, template("b1100", "B1100"), b1300];
 export const getBoat = (id: string) => boats.find((b) => b.id === id.toLowerCase());
