@@ -32,7 +32,7 @@ function ModelPage() {
 
   return (
     <>
-      <PageHero slot={boat.gallery[0]!} eyebrow={`BREVA · ${it ? "Modello" : "Model"}`} title={<span className="t-mega block">{boat.name}</span>} lead={l(boat.tagline)}>
+      <PageHero slot={boat.gallery[0]!} eyebrow={`BREVA · ${it ? "Modello" : "Model"}`} title={<><span className="sr-only">BREVA {boat.name}</span><img src={`/assets/breva/${boat.id}/logo/${boat.id}-wordmark-white.png`} alt="" aria-hidden="true" width={640} height={180} className="block h-auto max-h-28 w-auto max-w-[min(78vw,640px)] object-contain object-left md:max-h-36" onError={(event) => { event.currentTarget.style.display = "none"; event.currentTarget.previousElementSibling?.classList.remove("sr-only"); }} /></>} lead={l(boat.tagline)}>
         <CTA to="/experience" variant="solid">{t("cta.seatrial")}</CTA>
         <SoonButton>{t("cta.configure")}</SoonButton>
         <CTA to="/dealers" variant="outline">{t("cta.dealer")}</CTA>
