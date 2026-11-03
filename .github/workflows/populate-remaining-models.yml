@@ -77,6 +77,9 @@ jobs:
           git add public/assets/breva/b630/ public/assets/breva/b1100/ src/content/asset-index.json
           if ! git diff --cached --quiet; then
             git commit -m "assets: populate B630 and B1100 from approved marketing Drive folders"
+            # Build/import scripts may leave tracked working-tree changes outside our
+            # explicitly staged image/index files. Stash those before rebasing.
+            git stash push -m "workflow temporary working-tree changes" || true
             git pull --rebase origin feat/import-lovable-prototype
             git push origin HEAD:feat/import-lovable-prototype
           fi
