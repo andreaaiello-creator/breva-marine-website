@@ -1,0 +1,83 @@
+name: BREVA Export Official Model Logos
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/export-official-model-logos.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: breva-official-model-logos
+  cancel-in-progress: false
+jobs:
+  export-logos:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout BREVA Website development branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/import-lovable-prototype
+          persist-credentials: true
+      - name: Install renderer and Pillow
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y poppler-utils
+          python -m pip install --disable-pip-version-check Pillow
+      - name: Export exact Illustrator PDF-compatible lettering
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image, ImageChops
+          import subprocess, tempfile
+          for model in ('b630', 'b800', 'b1100', 'b1300'):
+              directory = Path(f'public/assets/breva/{model}/logo')
+              source = directory / f'ProductName_Breva{model[1:]}.ai'
+              if not source.exists():
+                  raise SystemExit(f'Missing official Illustrator file: {source}')
+              if not source.read_bytes().startswith(b'%PDF-'):
+                  raise SystemExit(f'Illustrator artwork is not PDF-compatible: {source}')
+              with tempfile.TemporaryDirectory() as tmp:
+                  prefix = Path(tmp)/'render'
+                  subprocess.run(['pdftocairo', '-f', '1', '-l', '1', '-singlefile', '-png',
+                                  '-transp', '-r', '200', str(source), str(prefix)],
+                                 check=True)
+                  image = Image.open(str(prefix)+'.png').convert('RGBA')
+                  alpha = image.getchannel('A')
+                  bbox = alpha.getbbox()
+                  if not bbox:
+                      raise SystemExit(f'No visible artwork in {source}')
+                  image = image.crop(bbox)
+                  # Do not accept a giant blank artboard or near-zero logo.
+                  if min(image.size) < 8:
+                      raise SystemExit(f'Unexpected tiny logo output for {model}: {image.size}')
+                  alpha = image.getchannel('A')
+                  for variant, color in [('white', (255,255,255)), ('dark', (13,20,26))]:
+                      output = Image.new('RGBA', image.size, color+(0,))
+                      output.putalpha(alpha)
+                      output.save(directory/f'{model}-wordmark-{variant}.png', optimize=True)
+                  print(f'{model}: {image.size[0]}x{image.size[1]} transparent logo exported')
+          PY
+      - uses: oven-sh/setup-bun@v2
+      - name: Verify site
+        run: |
+          bun install --frozen-lockfile
+          bun run test
+          bun run build
+      - name: Commit approved brand assets only to the development branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for model in b630 b800 b1100 b1300; do
+            git add "public/assets/breva/$model/logo/$model-wordmark-white.png" "public/assets/breva/$model/logo/$model-wordmark-dark.png"
+          done
+          if ! git diff --cached --quiet; then
+            git commit -m "assets: export official BREVA model logos in white and dark PNG"
+            git stash push -m "temporary generated files" || true
+            git pull --rebase origin feat/import-lovable-prototype
+            git push origin HEAD:feat/import-lovable-prototype
+          fi
