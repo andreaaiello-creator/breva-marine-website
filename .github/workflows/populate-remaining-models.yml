@@ -1,0 +1,82 @@
+name: BREVA Populate B630 and B1100 from Marketing Drive
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+  id-token: write
+concurrency:
+  group: breva-populate-models
+  cancel-in-progress: false
+jobs:
+  import-models:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout development branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/import-lovable-prototype
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: oven-sh/setup-bun@v2
+      - name: Install dependencies
+        run: |
+          python -m pip install --disable-pip-version-check Pillow google-api-python-client google-auth
+          bun install --frozen-lockfile
+      - name: Authenticate to approved Google Drive folders
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/101676037530/locations/global/workloadIdentityPools/breva-github-actions/providers/breva-github
+          service_account: breva-website-drive-sync@breva-erp.iam.gserviceaccount.com
+          create_credentials_file: true
+      - name: Import B630 navigation and details, B1100 concept configurations
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p import-reports
+          python scripts/import_breva_drive_photos.py --scope b630-navigation --mode apply --max-images 12
+          mv asset-import-report.json import-reports/b630-navigation.json
+          python scripts/import_breva_drive_photos.py --scope b630-details --mode apply --max-images 6
+          mv asset-import-report.json import-reports/b630-details.json
+          for scope in b1100-open b1100-comfort-cruiser b1100-dinette b1100-sunbed; do
+            python scripts/import_breva_drive_photos.py --scope "$scope" --mode apply --max-images 5
+            mv asset-import-report.json "import-reports/$scope.json"
+          done
+          python scripts/build_asset_index.py
+      - name: Verify published image files and source mapping
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          index = json.loads(Path("src/content/asset-index.json").read_text())
+          bad = []
+          totals = {"b630": 0, "b1100": 0}
+          for asset in index["assets"]:
+              path = Path("public") / asset["src"].removeprefix("/public/").removeprefix("/")
+              if not path.is_file(): bad.append(asset["src"])
+              if asset["model"] in totals: totals[asset["model"]] += 1
+          print("Model image totals:", totals)
+          if bad: raise SystemExit("Missing images: " + str(bad[:10]))
+          if totals["b630"] < 1: raise SystemExit("B630 import did not yield a single image")
+          PY
+      - name: Run site tests and production build
+        run: |
+          bun run test
+          bun run build
+      - name: Upload import audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: breva-models-import-audit
+          path: import-reports/
+          if-no-files-found: ignore
+      - name: Commit only optimized model assets and updated index to feature branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/assets/breva/b630/ public/assets/breva/b1100/ src/content/asset-index.json
+          if ! git diff --cached --quiet; then
+            git commit -m "assets: populate B630 and B1100 from approved marketing Drive folders"
+            git pull --rebase origin feat/import-lovable-prototype
+            git push origin HEAD:feat/import-lovable-prototype
+          fi
