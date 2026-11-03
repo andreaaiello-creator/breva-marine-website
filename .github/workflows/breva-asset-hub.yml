@@ -11,6 +11,10 @@ on:
           - b630-details
           - b800-navigation
           - b800-details
+          - b1100-open
+          - b1100-comfort-cruiser
+          - b1100-dinette
+          - b1100-sunbed
           - b1300-navigation
           - b1300-details
           - shipyard
@@ -84,6 +88,7 @@ jobs:
           case "$SCOPE" in
             b630-*) git add public/assets/breva/b630/ ;;
             b800-*) git add public/assets/breva/b800/ ;;
+            b1100-*) git add public/assets/breva/b1100/ ;;
             b1300-*) git add public/assets/breva/b1300/ ;;
             shipyard) git add public/assets/breva/shipyard/ ;;
             *) echo "Unexpected scope"; exit 1 ;;
