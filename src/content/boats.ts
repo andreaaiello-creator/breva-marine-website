@@ -46,13 +46,13 @@ const template = (id: Boat["id"], name: string, populated = false): Boat => ({
 
 // Use only already-imported official BREVA assets; no Drive IDs or credentials exposed.
 const galleryFromAssets = (model: Boat["id"], name: string): MediaSlot[] => {
-  const entries = assetIndex.assets.filter((asset) => asset.model === model && (asset.category === "navigation" || asset.category === "details"));
-  const ordered = [...entries.filter((asset) => asset.category === "navigation" && !/(?:^|[-_])det(?:[-_]|$)/i.test(asset.filename)), ...entries.filter((asset) => asset.category === "details" || /(?:^|[-_])det(?:[-_]|$)/i.test(asset.filename))];
+  const entries = assetIndex.assets.filter((asset) => asset.model === model && (asset.category === "navigation" || asset.category === "details" || (model === "b1100" && asset.category === "static")));
+  const ordered = [...entries.filter((asset) => (asset.category === "navigation" || asset.category === "static") && !/(?:^|[-_])det(?:[-_]|$)/i.test(asset.filename)), ...entries.filter((asset) => asset.category === "details" || /(?:^|[-_])det(?:[-_]|$)/i.test(asset.filename))];
   return ordered.map((asset, i) => ({
     id: `${model}-official-${i + 1}`,
     alt: {
-      it: `${name} — fotografia ufficiale ${asset.category === "details" ? "di dettaglio" : "in navigazione"}`,
-      en: `${name} — official ${asset.category === "details" ? "detail" : "underway"} photograph`,
+      it: `${name} — fotografia ufficiale ${asset.category === "static" ? "illustrativa" : asset.category === "details" ? "di dettaglio" : "in navigazione"}`,
+      en: `${name} — official ${asset.category === "static" ? "concept" : asset.category === "details" ? "detail" : "underway"} photograph`,
     },
     kind: "photo" as const,
     aspect: (i === 0 ? "cinema" : i % 3 === 1 ? "tall" : "wide") as MediaSlot["aspect"],
@@ -114,12 +114,45 @@ b800.gallery = b800Preferred.map((filename) =>
 ).filter((slot): slot is MediaSlot => Boolean(slot));
 
 b1300.gallery = galleryFromAssets("b1300", "B1300").slice(0, 10);
-export const boats: Boat[] = [template("b630", "B630"), b800, template("b1100", "B1100"), b1300];
+const b630 = template("b630", "B630", true);
+b630.tagline = { it: "Dimensioni compatte. Spirito BREVA.", en: "Compact proportions. BREVA spirit." };
+b630.intro = {
+  it: "Il BREVA B630 interpreta l'uscita in mare con linee sportive, dimensioni agili e uno stile essenziale. Scopri le immagini ufficiali, le finiture e le possibilità di personalizzazione.",
+  en: "The BREVA B630 brings sporty lines, agile dimensions and a clean design to days on the water. Explore official photography, finishes and customization options.",
+};
+b630.highlights = [
+  { title: { it: "Agilità", en: "Agility" }, body: { it: "Una proposta compatta per vivere il mare con semplicità.", en: "A compact choice for uncomplicated days at sea." } },
+  { title: { it: "Spazi", en: "Spaces" }, body: { it: "Layout pensato per sfruttare con cura gli spazi a bordo.", en: "A layout designed to make considered use of onboard space." } },
+  { title: { it: "Personalità", en: "Identity" }, body: { it: "Materiali e colori per un'imbarcazione che rispecchia il tuo stile.", en: "Materials and colours to express your personal style." } },
+];
+const b630Photos = galleryFromAssets("b630", "B630");
+if (b630Photos.length) b630.gallery = b630Photos.slice(0, 12);
+const b1100 = template("b1100", "B1100", true);
+b1100.tagline = { it: "Più modi di vivere il mare.", en: "More ways to experience the sea." };
+b1100.intro = {
+  it: "Il BREVA B1100 nasce con una filosofia di configurazione flessibile. Le diverse interpretazioni del ponte consentono di scegliere il modo di vivere gli spazi a bordo. Le immagini di progetto sono illustrative.",
+  en: "The BREVA B1100 follows a flexible approach to deck configuration. Different arrangements make room for different ways of enjoying life onboard. Concept visuals are illustrative.",
+};
+b1100.highlights = [
+  { title: { it: "Versioni", en: "Versions" }, body: { it: "Open, Comfort Cruiser, Dinette e Sunbed: soluzioni da esplorare e verificare in fase di configurazione.", en: "Open, Comfort Cruiser, Dinette and Sunbed: configurations to explore and confirm." } },
+  { title: { it: "Design", en: "Design" }, body: { it: "Un progetto che interpreta il rapporto tra navigazione e vita all'aperto.", en: "A design shaped around cruising and outdoor living." } },
+  { title: { it: "Su misura", en: "Made to fit" }, body: { it: "Dotazioni e finiture vengono definite insieme al team BREVA.", en: "Equipment and finishes are specified with the BREVA team." } },
+];
+const b1100Photos = galleryFromAssets("b1100", "B1100");
+if (b1100Photos.length) b1100.gallery = b1100Photos.slice(0, 12);
+export const boats: Boat[] = [b630, b800, b1100, b1300];
 export const getBoat = (id: string) => boats.find((b) => b.id === id.toLowerCase());
 
 /** pdfUrl stays undefined until the correct model-specific brochure is uploaded. */
+const brochureFiles: Record<Boat["id"], string> = {
+  b630: "/assets/breva/b630/brochures/Brochure_modello%20630_2026.pdf",
+  b800: "/assets/breva/b800/brochures/Brochure_modello%20800_2026.pdf",
+  b1100: "/assets/breva/b1100/brochures/Breva%201100_brochure.pdf",
+  b1300: "/assets/breva/b1300/brochures/Breva%201300_Brochure-2026.pdf",
+};
 export const brochures: Brochure[] = boats.map((b) => ({
-  modelId: b.id, title: { it: `Brochure ${b.name}`, en: `${b.name} brochure` }, language: ["IT", "EN"],
+  modelId: b.id, title: { it: `Brochure ${b.name}`, en: `${b.name} brochure` },
+  language: ["IT", "EN"], pdfUrl: brochureFiles[b.id],
 }));
 
 export const press: PressItem[] = [
