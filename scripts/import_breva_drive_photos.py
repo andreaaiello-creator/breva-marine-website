@@ -15,6 +15,10 @@ FOLDERS = {
  "b800-details": ("1zkftOjU5n5-WWLZIiH7kpNBrUqoxg2uQ", "b800/details"),
  "b1300-navigation": ("1NH2ccDKWzZnusENPILRY6UQ4nQ5dFXZV", "b1300/navigation"),
  "b1300-details": ("1ekuE-w3UqjveNTuT6t7iB2Bm-HrN7rKq", "b1300/details"),
+ "b1100-open": ("1H4txhVBaQK8hEjxom24M1JEVr2guQbpF", "b1100/static"),
+ "b1100-comfort-cruiser": ("1pCBQo_tiyCDU8NCKxQWeSf8nLygIQtLd", "b1100/static"),
+ "b1100-dinette": ("1ZTeiPH2NWBN6YqsWaC2RPg1lIsFVfgOo", "b1100/static"),
+ "b1100-sunbed": ("1UUcCCusQ2cJ8bQll_tDYOWXb8S1nDv2z", "b1100/static"),
  "shipyard": ("12Z4yno5tap1Bjo9d4Yy-I5wHGrA9CX9J", "shipyard/production"),
 }
 SUPPORTED = {"image/jpeg", "image/png", "image/webp", "image/tiff"}
